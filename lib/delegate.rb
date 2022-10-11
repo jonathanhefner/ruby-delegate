@@ -439,6 +439,6 @@ def DelegateClass(superclass, &block)
     raise unless self.instance_methods.include?(name)
     superclass.instance_method(name)
   end
-  klass.module_eval(&block) if block
+  klass.prepend(Module.new(&block)) if block
   return klass
 end
