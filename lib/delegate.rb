@@ -410,6 +410,8 @@ def DelegateClass(superclass, &block)
       __raise__ ::ArgumentError, "cannot delegate to self" if self.equal?(obj)
       @delegate_dc_obj = obj
     end
+  end
+  klass.include(Module.new do
     protected_instance_methods.each do |method|
       define_method(method, Delegator.delegating_block(method))
       protected method
@@ -417,7 +419,7 @@ def DelegateClass(superclass, &block)
     public_instance_methods.each do |method|
       define_method(method, Delegator.delegating_block(method))
     end
-  end
+  end)
   klass.define_singleton_method :public_instance_methods do |all=true|
     super(all) | superclass.public_instance_methods
   end
